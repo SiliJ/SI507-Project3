@@ -13,16 +13,51 @@ import requests
 ######### PART 0 #########
 
 # Write your code for Part 0 here.
+try:
+	image_data = open("gallery.html",'r').read()
+
+except:
+	image_data= requests.get("http://newmantaylor.com/gallery.html").text
+	f = open("gallery.html",'w')
+	f.write(image_data)
+	f.close()
+
+soup=BeautifulSoup(image_data,'html.parser')
+images=soup.find_all('img')
+for elem in images:
+		if elem.get('alt'):
+			print (elem.get('alt'))
+		else:
+			print ('no alternative text provided!')
+
+
+
 
 
 ######### PART 1 #########
 
 # Get the main page data...
+# try:
+# 	mainpg_data=open("nps_gov_data.html").read()
+#
+# except:
+# 	mainpg_data=requests.get('https://www.nps.gov/index.htm').text
+# 	f=open("nps_gov_data.html",'w')
+# 	f.write('mainpg_data')
+# 	f.close()
+
+# print(mainpg_data)
+# Nparks=BeautifulSoup(mainpg_data,'html.parser')
+# searchlist=Nparks.find("ul", {"class":"dropdown-menu SearchBar-keywordSearch"})
+# print (searchlist)
+
+
+
 
 # Try to get and cache main page data if not yet cached
 # Result of a following try/except block should be that
 # there exists a file nps_gov_data.html,
-# and the html text saved in it is stored in a variable 
+# and the html text saved in it is stored in a variable
 # that the rest of the program can access.
 
 # We've provided comments to guide you through the complex try/except, but if you prefer to build up the code to do this scraping and caching yourself, that is OK.
@@ -37,15 +72,15 @@ import requests
 # Result of a following try/except block should be that
 # there exist 3 files -- arkansas_data.html, california_data.html, michigan_data.html
 # and the HTML-formatted text stored in each one is available
-# in a variable or data structure 
+# in a variable or data structure
 # that the rest of the program can access.
 
-# TRY: 
+# TRY:
 # To open and read all 3 of the files
 
 # But if you can't, EXCEPT:
 
-# Create a BeautifulSoup instance of main page data 
+# Create a BeautifulSoup instance of main page data
 # Access the unordered list with the states' dropdown
 
 # Get a list of all the li (list elements) from the unordered list, using the BeautifulSoup find_all method
@@ -135,4 +170,3 @@ import requests
 ## Note that running this step for ALL your data make take a minute or few to run -- so it's a good idea to test any methods/functions you write with just a little bit of data, so running the program will take less time!
 
 ## Also remember that IF you have None values that may occur, you might run into some problems and have to debug for where you need to put in some None value / error handling!
-
