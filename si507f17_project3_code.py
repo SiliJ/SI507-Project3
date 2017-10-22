@@ -17,7 +17,7 @@ try:
 	image_data = open("gallery.html",'r').read()
 
 except:
-	image_data= requests.get("http://newmantaylor.com/gallery.html").text
+	image_data = requests.get("http://newmantaylor.com/gallery.html").text
 	f = open("gallery.html",'w')
 	f.write(image_data)
 	f.close()
@@ -31,42 +31,24 @@ for elem in images:
 			print ('no alternative text provided!')
 
 
-
-
-
 ######### PART 1 #########
 
 # Get the main page data...
-# try:
-# 	mainpg_data=open("nps_gov_data.html").read()
-#
-# except:
-# 	mainpg_data=requests.get('https://www.nps.gov/index.htm').text
-# 	f=open("nps_gov_data.html",'w')
-# 	f.write('mainpg_data')
-# 	f.close()
-
-# print(mainpg_data)
-# Nparks=BeautifulSoup(mainpg_data,'html.parser')
-# searchlist=Nparks.find("ul", {"class":"dropdown-menu SearchBar-keywordSearch"})
-# print (searchlist)
-
-
-
-
 # Try to get and cache main page data if not yet cached
 # Result of a following try/except block should be that
 # there exists a file nps_gov_data.html,
 # and the html text saved in it is stored in a variable
 # that the rest of the program can access.
+try:
+ 	mainpg_data=open("nps_gov_data.html",'r').read()
+
+except:
+ 	mainpg_data=requests.get("https://www.nps.gov/index.htm").text
+ 	f=open("nps_gov_data.html",'w')
+ 	f.write(mainpg_data)
+ 	f.close()
 
 # We've provided comments to guide you through the complex try/except, but if you prefer to build up the code to do this scraping and caching yourself, that is OK.
-
-
-
-
-
-
 # Get individual states' data...
 
 # Result of a following try/except block should be that
@@ -77,15 +59,29 @@ for elem in images:
 
 # TRY:
 # To open and read all 3 of the files
+try:
+	Arkansas=open("arkansas_data.html",'r').read()
+	California=open("California_data.html",'r').read()
+	Michigan=open("Michigan_data.html",'r').read()
 
 # But if you can't, EXCEPT:
-
+except:
 # Create a BeautifulSoup instance of main page data
+	Nparks=BeautifulSoup(mainpg_data,'html.parser')
 # Access the unordered list with the states' dropdown
-
+	dropdownlist=Nparks.find("ul", {"class":"dropdown-menu SearchBar-keywordSearch"})
 # Get a list of all the li (list elements) from the unordered list, using the BeautifulSoup find_all method
-
+	citylist=dropdownlist.find_all('a')
+	targetcity=[]
 # Use a list comprehension or accumulation to get all of the 'href' attributes of the 'a' tag objects in each li, instead of the full li objects
+	for elem in citylist:
+		if 'Michigan' in elem:
+			targetcity.append(elem)
+		if 'California' in elem:
+			targetcity.append(elem)
+		if 'Arkansas' in elem:
+			targetcity.append(elem)
+	print (targetcity)
 
 # Filter the list of relative URLs you just got to include only the 3 you want: AR's, CA's, MI's, using the accumulator pattern & conditional statements
 
